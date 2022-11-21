@@ -8,6 +8,10 @@ public abstract class BoardSquare {
      */
     private String name;
 
+    public BoardSquare(String name) {
+        this.name = name;
+    }
+
     /**
      * action that the square takes.
      */
