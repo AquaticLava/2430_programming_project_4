@@ -1,13 +1,25 @@
 package Monopoly;
 
 import Monopoly.Cards.Card;
+import Monopoly.Cards.OutOfJail;
+
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Random;
 
 public class Deck {
+    public Deck(List<Card> cards) {
+        this.discardedCards = cards;
+        this.cards = new LinkedList<>();
+        Shuffle();
+    }
+
     /**
      * cards in this deck
      */
-    private List<Card> cards;
+    private Queue<Card> cards;
+    private Random random = new Random();
 
     /**
      * cards that have been discarded.
@@ -18,13 +30,26 @@ public class Deck {
      * shuffles the deck
      */
     public void Shuffle() {
+        int numOfCards = discardedCards.size();
+        for (int i = 0; i < numOfCards; i++) {
+            int randomIndex = random.nextInt(discardedCards.size());
+            cards.add(discardedCards.remove(randomIndex));
+        }
     }
 
     /**
      * Returns the next card, if there is no next card the discard pile is shuffled and put into the deck of cards.
      */
     public Card Draw() {
-        return null;
+        if (cards.isEmpty()){
+            Shuffle();
+        }
+        Card card = cards.remove();
+        if (!(card instanceof OutOfJail)){
+            discardedCards.add(card);
+        }
+
+        return card;
     }
 
 }
