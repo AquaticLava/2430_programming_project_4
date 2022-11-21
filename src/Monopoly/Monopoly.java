@@ -5,6 +5,18 @@ import Monopoly.BoardSquares.BoardSquare;
 public class Monopoly {
     private Player player;
 
+    public BoardSquare[] getGameBoard() {
+        return gameBoard;
+    }
+
+    public Deck getChanceDeck() {
+        return chanceDeck;
+    }
+
+    public Deck getCommunityChestDeck() {
+        return communityChestDeck;
+    }
+
     private BoardSquare[] gameBoard;
 
     private Deck chanceDeck;
@@ -17,6 +29,10 @@ public class Monopoly {
     }
 
     public void InitGame() {
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }
