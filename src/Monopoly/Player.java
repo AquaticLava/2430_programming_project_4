@@ -47,7 +47,9 @@ public class Player {
      * do this players turn.
      */
     public void DoTurn() {
-
+//        int DoubleCount = 0;
+//        int spacesToMove = Die.Roll();
+//        setCurrentSquare(getCurrentSquare() + spacesToMove);
     }
 
     public void setCurrentSquare(int currentSquare) {

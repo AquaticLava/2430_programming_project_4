@@ -9,7 +9,7 @@ public class GoToJail extends BoardSquare{
 
     @Override
     public void Action(Player player) {
-        player.setCurrentSquare(41);
-        player.getMonopoly().getGameBoard()[41].Action(player);
+        player.setCurrentSquare(40);
+        player.getMonopoly().getGameBoard()[40].Action(player);
     }
 }
