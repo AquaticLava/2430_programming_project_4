@@ -77,7 +77,7 @@ public class Player {
     	int roll2;
     	
     	//Put as a loop for ease of handling die roll
-    	while(doubles < 2 || rollsLeft > 0) {
+    	while(doubles > 1 || rollsLeft > 0) {
     		roll1 = Die.Roll();
     		roll2 = Die.Roll();
     		rollsLeft--;
@@ -95,18 +95,22 @@ public class Player {
                 } else {
                     useCardLater(doubles);
                 }
-
+                if (currentSquare != 40){
+                    currentSquare = ((currentSquare + roll1 + roll2) % 40);
+                    doAction();
+                }
 	    	} else {
-                currentSquare = (currentSquare + roll1 + roll2) % 39;
-
+                currentSquare = ((currentSquare + roll1 + roll2) % 40);
                 doAction();
 	    	}
-            if (doubles == 4){
+
+
+            if (doubles == 3){
                 currentSquare = 40;
+                break;
             }
             landedOnSquares[currentSquare]++;
     	}
-
     }
 
     private void useCardImmediately(int doubles) {
@@ -123,11 +127,11 @@ public class Player {
         turnsInJail++;
 
         if(getOutOfJailFreeCards() > 0 && turnsInJail == 4) {
-            currentSquare = 11;
+            currentSquare = 10;
             outOfJailFreeCards--;
             turnsInJail = 0;
         } else if(doubles > 0){
-            currentSquare = 11;
+            currentSquare = 10;
             turnsInJail = 0;
         }
     }
