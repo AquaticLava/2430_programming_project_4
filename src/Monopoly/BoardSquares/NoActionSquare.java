@@ -2,8 +2,8 @@ package Monopoly.BoardSquares;
 
 import Monopoly.Player;
 
-public class NoAction extends BoardSquare{
-    public NoAction(String name) {
+public class NoActionSquare extends BoardSquare{
+    public NoActionSquare(String name) {
         super(name);
     }
 

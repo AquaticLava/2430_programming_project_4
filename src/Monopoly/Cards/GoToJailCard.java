@@ -1,9 +1,9 @@
-package Monopoly.BoardSquares;
+package Monopoly.Cards;
 
 import Monopoly.Player;
 
-public class GoToJail extends BoardSquare{
-    public GoToJail(String name) {
+public class GoToJailCard extends Card{
+    public GoToJailCard(String name) {
         super(name);
     }
 

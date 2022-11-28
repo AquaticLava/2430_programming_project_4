@@ -2,8 +2,8 @@ package Monopoly.Cards;
 
 import Monopoly.Player;
 
-public class NoAction extends Card{
-    public NoAction(String name) {
+public class NoActionCard extends Card{
+    public NoActionCard(String name) {
         super(name);
     }
 
