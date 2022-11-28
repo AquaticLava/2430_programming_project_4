@@ -1,8 +1,18 @@
 package Monopoly;
 
 import Monopoly.BoardSquares.BoardSquare;
+import Monopoly.BoardSquares.DrawCardSquare;
+import Monopoly.BoardSquares.Jail;
+import Monopoly.Cards.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Creates a game object of Monopoly. Use to play a game of monopoly without the use of money.
+ */
 public class Monopoly {
+
     private Player player;
     private BoardSquare[] gameBoard;
     private Deck chanceDeck;
@@ -150,11 +160,12 @@ public class Monopoly {
         return option[0];
     }
 
+    /**
+     * Do game turn.
+     */
     public void DoGameTurn() {
-    }
-
-    public void InitGame() {
-    }
+            player.DoTurn(); //TODO
+        }
 
     /**
      * The entry point of application.
