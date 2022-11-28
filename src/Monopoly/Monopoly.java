@@ -24,9 +24,10 @@ public class Monopoly {
      */
     public Monopoly(){
         int numberOfSquares = 41; // 40 board squares starting at 0, index 40 is the jail
-        gameBoard = generateBoard(numberOfSquares);
         chanceDeck = generateChanceDeck();
         communityChestDeck = generateCommunityDeck();
+        gameBoard = generateBoard(numberOfSquares);// TODO check switched order, Decks were null when generating gameBoard
+
         player = new Player(this, false);
 
     }
@@ -55,7 +56,9 @@ public class Monopoly {
             } else if (i == 40) { // Jail square
                 gameBoard[i] = new Jail("Jail");
             }
-            gameBoard[i] = new NoActionSquare("blank"); // default square is no action
+             else { // added else bracket, all squares were defaulting to blank
+                 gameBoard[i] = new NoActionSquare("blank"); // default square is blank, with no action
+            }
         }
 
         return gameBoard;
@@ -156,7 +159,7 @@ public class Monopoly {
      */
     public static void main(String[] args) {
         Monopoly m = new Monopoly();
-        int targetNumberOfTurns = 100;
+        int targetNumberOfTurns = 10;
         while (m.turnsTaken < targetNumberOfTurns){
             m.DoGameTurn();
         }

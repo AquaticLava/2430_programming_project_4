@@ -16,6 +16,7 @@ public class MoveToRail extends Card{
             if (currentSquare < j) {
                 player.setCurrentSquare(j);
             }
+            player.setCurrentSquare(railStations[0]); // currentSquare > last railStation
         }
     }
 }

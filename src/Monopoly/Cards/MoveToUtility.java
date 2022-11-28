@@ -16,6 +16,7 @@ public class MoveToUtility extends Card{
             if (currentSquare < j) {
                 player.setCurrentSquare(j);
             }
+            player.setCurrentSquare(utilities[0]); // currentSquare > last utility square
         }
     }
 }
