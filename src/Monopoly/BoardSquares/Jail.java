@@ -12,6 +12,6 @@ public class Jail extends BoardSquare{
 
     @Override
     public void Action(Player player) {
-        player.setInJail(true);
+
     }
 }
