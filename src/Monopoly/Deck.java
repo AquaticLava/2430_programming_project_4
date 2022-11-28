@@ -13,6 +13,7 @@ public class Deck {
     public Deck(List<Card> cards) {
         this.discardedCards = cards;
         this.cards = new LinkedList<>();
+        this.size = cards.size();
         Shuffle();
     }
 
@@ -21,6 +22,7 @@ public class Deck {
      */
     private Queue<Card> cards;
     private Random random = new Random();
+    private int size = 0;
 
     /**
      * cards that have been discarded.
@@ -48,9 +50,14 @@ public class Deck {
         Card card = cards.remove();
         if (!(card instanceof OutOfJail)){
             discardedCards.add(card);
+            size--;
         }
 
         return card;
     }
 
+    public void AddOutOfJailCard(){
+        discardedCards.add(new OutOfJail("Get out of jail Free"));
+        size++;
+    }
 }
