@@ -9,6 +9,7 @@ import java.util.Queue;
 import java.util.Random;
 
 public class Deck {
+
     public Deck(List<Card> cards) {
         this.discardedCards = cards;
         this.cards = new LinkedList<>();

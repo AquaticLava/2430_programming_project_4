@@ -65,7 +65,7 @@ public class Player {
 
     
     /**
-     * do this players turn.
+     * do this players turn, also use get out of jail free cards right from the getgo.
      */
     public void DoTurn() {
     	//roll the dice
@@ -88,8 +88,9 @@ public class Player {
 	    	}
 	
 	    	//if not on jail, go amount on dice and set current square
-	    	if(currentSquare != 41) {
-	    		currentSquare = currentSquare + roll1 + roll2 % 40;
+	    	if(currentSquare != 40) {
+	    		// Reason why I didn't use the setter is because there are issues with going over amount of board spaces
+	    		currentSquare = currentSquare + roll1 + roll2 % 39;
 	    		
 	    		doAction();
 	    	} else {
@@ -101,8 +102,13 @@ public class Player {
 	    		}
 	    	}
     	}
+
     }
     
+    /**
+     * Method for doing the get out of jail on the 4th turn.
+     */
+    // I am really tired right now, and can't think up a better way to do this.
     public void DoAlternateTurn() {
     	int doubles = 0;
     	int rollsLeft = 1;
@@ -121,8 +127,8 @@ public class Player {
 	    	}
 	
 	    	//if not on jail, go amount on dice and set current square
-	    	if(currentSquare != 41) {
-	    		currentSquare = currentSquare + roll1 + roll2 % 40;
+	    	if(currentSquare != 40) {
+	    		currentSquare = currentSquare + roll1 + roll2 % 39;
 	    		
 	    		doAction();
 	    	} else {
