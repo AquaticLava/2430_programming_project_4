@@ -18,9 +18,24 @@ public class Player {
 
     private boolean inJail;
     
+    /**
+     * the current square the player is on.
+     */
+    private int currentSquare;
+    
+    /**
+     * number of turns in jail
+     */
+    private int turnsInJail;
+    
+    /**
+     * 
+     * @param monopoly
+     */
     public Player(Monopoly monopoly) {
     	this.monopoly = monopoly;
-    	currentSquare = 0; //TODO : Change to GO square
+    	//Space 0 will be designated as the GO square
+    	setCurrentSquare(0);
     }
 
     // Getter And Setter Methods
@@ -48,15 +63,10 @@ public class Player {
         this.outOfJailFreeCards = outOfJailFreeCards;
     }
 
-    /**
-     * the current square the player is on.
-     */
-    private int currentSquare;
     
     /**
      * do this players turn.
      */
-    //TODO : fill the required methods
     public void DoTurn() {
     	//roll the dice
     	int doubles = 0;
@@ -78,20 +88,61 @@ public class Player {
 	    	}
 	
 	    	//if not on jail, go amount on dice and set current square
-	    	//TODO: replace 0 with jail square and 1 with no action square
-	    	if(currentSquare != 0) {
-	    		currentSquare = currentSquare + roll1 + roll2;
+	    	if(currentSquare != 41) {
+	    		currentSquare = currentSquare + roll1 + roll2 % 40;
 	    		
-	    		if(currentSquare != 1) {
-	    			//currentSquare.doAction();
+	    		doAction();
+	    	} else {
+	    		if(getOutOfJailFreeCards() > 0) {
+	    			currentSquare = 11;
+	    			outOfJailFreeCards--;
+	    		} else if(doubles > 0){
+	    			currentSquare = 11;
 	    		}
-	    	} else if (doubles > 0){ //checks for doubles in jail
-	    		//TODO: replace this V with the logic to get out of jail
-	    		currentSquare = 0 + 1;
 	    	}
     	}
     }
-
+    
+    public void DoAlternateTurn() {
+    	int doubles = 0;
+    	int rollsLeft = 1;
+    	Die die = new Die();
+    	int roll1;
+    	int roll2;
     	
+    	while(doubles < 2 || rollsLeft > 0) {
+    		roll1 = die.Roll();
+    		roll2 = die.Roll();
+    		rollsLeft--;
+    		
+	    	if(roll1 == roll2) {
+	    		doubles++;
+	    		rollsLeft++;
+	    	}
+	
+	    	//if not on jail, go amount on dice and set current square
+	    	if(currentSquare != 41) {
+	    		currentSquare = currentSquare + roll1 + roll2 % 40;
+	    		
+	    		doAction();
+	    	} else {
+	    		turnsInJail++;
+	    		
+	    		if(getOutOfJailFreeCards() > 0 && turnsInJail == 4) {
+	    			currentSquare = 11;
+	    			outOfJailFreeCards--;
+	    			turnsInJail = 0;
+	    		} else if(doubles > 0){
+	    			currentSquare = 11;
+	    			turnsInJail = 0;
+	    		}
+	    	}
+    	}
+    	
+    }
+    
+    private void doAction() {
+    	monopoly.getGameBoard()[currentSquare].Action(this);
+    }
 }
 
