@@ -7,7 +7,7 @@ public class Player {
     private int outOfJailFreeCards;
 
     /**
-     * The monopoly instance the player is attached to. used to get the gameboard, chance deck, and communtiy chest deck.
+     * The monopoly instance the player is attached to. used to get the gameboard, chance deck, and community chest deck.
      */
     private Monopoly monopoly;
 
@@ -77,7 +77,7 @@ public class Player {
     	int roll2;
     	
     	//Put as a loop for ease of handling die roll
-    	while(doubles < 2 || rollsLeft > 0) {
+    	while(doubles < 2 && rollsLeft > 0) {// TODO i think this needs to be &&, otherwise they can both be zero and it keeps looping
     		roll1 = Die.Roll();
     		roll2 = Die.Roll();
     		rollsLeft--;
