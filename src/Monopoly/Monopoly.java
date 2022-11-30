@@ -4,7 +4,6 @@ import Monopoly.BoardSquares.*;
 import Monopoly.Cards.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,13 +21,13 @@ public class Monopoly {
     /**
      * Instantiates a new Monopoly.
      */
-    public Monopoly(){
+    public Monopoly(boolean useCardImmediately){
         int numberOfSquares = 41; // 40 board squares starting at 0, index 40 is the jail
         chanceDeck = generateChanceDeck();
         communityChestDeck = generateCommunityDeck();
         gameBoard = generateBoard(numberOfSquares);// TODO check switched order, Decks were null when generating gameBoard
 
-        player = new Player(this, false);
+        player = new Player(this, useCardImmediately);
 
     }
     /**
@@ -158,22 +157,49 @@ public class Monopoly {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        Monopoly m = new Monopoly();
-        int targetNumberOfTurns = 10_000;
-        while (m.turnsTaken < targetNumberOfTurns){
+       int[] testQuantities = {
+            1_000,
+            10_000,
+            100_000,
+            1_000_000
+        };
+
+       for (int qty : testQuantities){
+           Monopoly stratA = new Monopoly(true); //TODO make sure these are the correct strats
+           Monopoly stratB = new Monopoly(false);
+           runTurns(stratA, qty);
+           runTurns(stratB, qty);
+       }
+
+
+    }
+
+    private static void runTurns(Monopoly m, int qty){
+        while(m.turnsTaken < qty) {
             m.DoGameTurn();
         }
-        System.out.println(Arrays.toString(m.player.getLandedOnSquares()));
+        displayTests(m, qty);
+    }
+
+    private static void displayTests(Monopoly m, int qty){ //TODO if we have time, it would look nice to have side by side results
         int playerTurns = 0;
         for (int i : m.player.getLandedOnSquares()) {
             playerTurns += i;
         }
-        System.out.println("player turns taken: " + playerTurns);
-        System.out.println();
+        if (m.player.usesCardImmediately()) {
+            System.out.println("Strategy A");
+        } else {
+            System.out.println("Strategy B");
+        }
+        System.out.println("-----------");
+        System.out.println("number of test turns: " + qty);
+        System.out.println("player turns taken: " + playerTurns); //TODO Eric, do you want to keep? what should we name it
+        System.out.println("-----------");
         System.out.println("square name:        times landed");
         System.out.println("================================");
         for (int i = 0; i < m.player.getLandedOnSquares().length; i++){
-            System.out.printf("%-15s %15d\n", m.getGameBoard()[i].getName(), m.player.getLandedOnSquares()[i] );
+            System.out.printf("%2d: %-15s %11d\n", i , m.getGameBoard()[i].getName(), m.player.getLandedOnSquares()[i] );
         }
+
     }
 }
