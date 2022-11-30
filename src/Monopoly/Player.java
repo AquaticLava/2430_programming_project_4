@@ -77,7 +77,7 @@ public class Player {
     	int roll2;
     	
     	//Put as a loop for ease of handling die roll
-    	while(doubles < 2 && rollsLeft > 0) {// TODO i think this needs to be &&, otherwise they can both be zero and it keeps looping
+    	while(doubles < 2 && rollsLeft > 0) {
     		roll1 = Die.Roll();
     		roll2 = Die.Roll();
     		rollsLeft--;
@@ -102,7 +102,6 @@ public class Player {
             if (doubles == 4){
                 currentSquare = 40;
             }
-            landedOnSquares[currentSquare]++;
     	}
 
     }
@@ -113,6 +112,21 @@ public class Player {
         if(getOutOfJailFreeCards() > 0) {
             currentSquare = 10;
             outOfJailFreeCards--;
+
+            //TODO add card to correct deck
+             if (monopoly.getChanceDeck().isMissingCard()) {
+                 monopoly.getChanceDeck().AddOutOfJailCard();
+             } else {
+                 monopoly.getCommunityChestDeck().AddOutOfJailCard();
+             }
+            /*
+                I am confused,
+                 if this player has an attribute of Monopoly,
+                and we change that deck, will it change the deck
+                of the actual Monopoly instance?
+
+                if not, how do we access the correct Deck?
+             */
             turnsInJail = 0;
         } else {
             currentSquare = 10;
@@ -127,6 +141,14 @@ public class Player {
         if(getOutOfJailFreeCards() > 0 && turnsInJail == 4) {
             currentSquare = 10;
             outOfJailFreeCards--;
+
+            //TODO add card to correct deck
+            if (monopoly.getChanceDeck().isMissingCard()) {
+                monopoly.getChanceDeck().AddOutOfJailCard();
+            } else {
+                monopoly.getCommunityChestDeck().AddOutOfJailCard();
+            }
+            
             turnsInJail = 0;
         } else if(doubles > 0){
             currentSquare = 10;
@@ -135,17 +157,32 @@ public class Player {
         	currentSquare = 10;
         	turnsInJail = 0;
         	moveToSquare(roll1, roll2);
+        } else {
+            landedOnSquares[currentSquare]++;
         }
     }
     
     private void moveToSquare(int roll1, int roll2) {
-    	currentSquare = (currentSquare + roll1 + roll2) % 39;
+    	currentSquare = (currentSquare + roll1 + roll2) % 40;
+        landedOnSquares[currentSquare]++;
 
         doAction();
     }
     
     private void doAction() {
+    	int previousSquare = currentSquare;
     	monopoly.getGameBoard()[currentSquare].Action(this);
+    	//Used to increment again if card/square that was landed on had the player move to another space
+    	if(previousSquare != currentSquare) landedOnSquares[currentSquare]++;
+    }
+
+    /**
+     * returns true if the player uses GOOJF card immediately, false if not
+     *
+     * @return  boolean true if this player uses GOOJF cards immediately
+     */
+    public boolean usesCardImmediately() {
+        return useCardImmediately;
     }
 }
 

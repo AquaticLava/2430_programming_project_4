@@ -60,4 +60,14 @@ public class Deck {
         discardedCards.add(new OutOfJail("Get out of jail Free"));
         size++;
     }
+
+    /**
+     * Used to determine which deck is missing
+     * a Get out of Jail Free card
+     *
+     * @return boolean true if card is missing
+     */
+    public boolean isMissingCard(){
+        return (cards.size() + discardedCards.size()) < this.size;
+    }
 }
