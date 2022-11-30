@@ -91,15 +91,13 @@ public class Player {
 	    	//if not on jail, go amount on dice and set current square
 	    	if(currentSquare == 40) {
                 if (useCardImmediately){
-                    useCardImmediately(doubles);
+                    useCardImmediately(doubles, roll1, roll2);
                 } else {
-                    useCardLater(doubles);
+                    useCardLater(doubles, roll1, roll2);
                 }
 
 	    	} else {
-                currentSquare = (currentSquare + roll1 + roll2) % 39;
-
-                doAction();
+                moveToSquare(roll1, roll2);
 	    	}
             if (doubles == 4){
                 currentSquare = 40;
@@ -109,27 +107,41 @@ public class Player {
 
     }
 
-    private void useCardImmediately(int doubles) {
+    private void useCardImmediately(int doubles, int roll1, int roll2) {
+        turnsInJail++;
+        
         if(getOutOfJailFreeCards() > 0) {
-            //Should this be 10? was 11.
             currentSquare = 10;
             outOfJailFreeCards--;
-        } else if(doubles > 0){
+            turnsInJail = 0;
+        } else {
             currentSquare = 10;
+            turnsInJail = 0;
+            moveToSquare(roll1, roll2);
         }
     }
 
-    private void useCardLater(int doubles) {
+    private void useCardLater(int doubles, int roll1, int roll2) {
         turnsInJail++;
 
         if(getOutOfJailFreeCards() > 0 && turnsInJail == 4) {
-            currentSquare = 11;
+            currentSquare = 10;
             outOfJailFreeCards--;
             turnsInJail = 0;
         } else if(doubles > 0){
-            currentSquare = 11;
+            currentSquare = 10;
             turnsInJail = 0;
+        } else if(turnsInJail == 3) {
+        	currentSquare = 10;
+        	turnsInJail = 0;
+        	moveToSquare(roll1, roll2);
         }
+    }
+    
+    private void moveToSquare(int roll1, int roll2) {
+    	currentSquare = (currentSquare + roll1 + roll2) % 39;
+
+        doAction();
     }
     
     private void doAction() {
