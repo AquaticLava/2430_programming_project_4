@@ -164,7 +164,7 @@ public class Player {
     }
     
     private void moveToSquare(int roll1, int roll2) {
-    	currentSquare = (currentSquare + roll1 + roll2) % 39;
+    	currentSquare = (currentSquare + roll1 + roll2) % 40;
         landedOnSquares[currentSquare]++;
 
         doAction();
