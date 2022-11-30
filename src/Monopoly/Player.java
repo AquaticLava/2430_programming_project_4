@@ -77,7 +77,7 @@ public class Player {
     	int roll2;
     	
     	//Put as a loop for ease of handling die roll
-    	while(doubles < 2 && rollsLeft > 0) {
+    	while(rollsLeft > 0) {
     		roll1 = Die.Roll();
     		roll2 = Die.Roll();
     		rollsLeft--;
@@ -91,7 +91,7 @@ public class Player {
 	    	//if not on jail, go amount on dice and set current square
 	    	if(currentSquare == 40) {
                 if (useCardImmediately){
-                    useCardImmediately(doubles, roll1, roll2);
+                    useCardImmediately(roll1, roll2);
                 } else {
                     useCardLater(doubles, roll1, roll2);
                 }
@@ -100,33 +100,24 @@ public class Player {
                 moveToSquare(roll1, roll2);
 	    	}
             if (doubles == 4){
-                currentSquare = 40;
+                moveToSquare(40);
+                break;
             }
     	}
 
     }
 
-    private void useCardImmediately(int doubles, int roll1, int roll2) {
+    private void useCardImmediately(int roll1, int roll2) {
         turnsInJail++;
         
         if(getOutOfJailFreeCards() > 0) {
             currentSquare = 10;
             outOfJailFreeCards--;
-
-            //TODO add card to correct deck
              if (monopoly.getChanceDeck().isMissingCard()) {
                  monopoly.getChanceDeck().AddOutOfJailCard();
              } else {
                  monopoly.getCommunityChestDeck().AddOutOfJailCard();
              }
-            /*
-                I am confused,
-                 if this player has an attribute of Monopoly,
-                and we change that deck, will it change the deck
-                of the actual Monopoly instance?
-
-                if not, how do we access the correct Deck?
-             */
             turnsInJail = 0;
         } else {
             currentSquare = 10;
@@ -142,7 +133,6 @@ public class Player {
             currentSquare = 10;
             outOfJailFreeCards--;
 
-            //TODO add card to correct deck
             if (monopoly.getChanceDeck().isMissingCard()) {
                 monopoly.getChanceDeck().AddOutOfJailCard();
             } else {
@@ -164,6 +154,12 @@ public class Player {
     
     private void moveToSquare(int roll1, int roll2) {
     	currentSquare = (currentSquare + roll1 + roll2) % 40;
+        landedOnSquares[currentSquare]++;
+
+        doAction();
+    }
+    private void moveToSquare(int square){
+        currentSquare = square;
         landedOnSquares[currentSquare]++;
 
         doAction();
