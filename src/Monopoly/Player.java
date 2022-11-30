@@ -7,7 +7,7 @@ public class Player {
     private int outOfJailFreeCards;
 
     /**
-     * The monopoly instance the player is attached to. used to get the gameboard, chance deck, and communtiy chest deck.
+     * The monopoly instance the player is attached to. used to get the gameboard, chance deck, and community chest deck.
      */
     private Monopoly monopoly;
 
@@ -77,7 +77,7 @@ public class Player {
     	int roll2;
     	
     	//Put as a loop for ease of handling die roll
-    	while(doubles > 1 || rollsLeft > 0) {
+    	while(doubles < 2 && rollsLeft > 0) {// TODO i think this needs to be &&, otherwise they can both be zero and it keeps looping
     		roll1 = Die.Roll();
     		roll2 = Die.Roll();
     		rollsLeft--;
@@ -91,39 +91,37 @@ public class Player {
 	    	//if not on jail, go amount on dice and set current square
 	    	if(currentSquare == 40) {
                 if (useCardImmediately){
-                    useCardImmediately(doubles);
+                    useCardImmediately(doubles, roll1, roll2);
                 } else {
-                    useCardLater(doubles);
+                    useCardLater(doubles, roll1, roll2);
                 }
-                if (currentSquare != 40){
-                    currentSquare = ((currentSquare + roll1 + roll2) % 40);
-                    doAction();
-                }
+
 	    	} else {
-                currentSquare = ((currentSquare + roll1 + roll2) % 40);
-                doAction();
+                moveToSquare(roll1, roll2);
 	    	}
-
-
-            if (doubles == 3){
+            if (doubles == 4){
                 currentSquare = 40;
-                break;
             }
             landedOnSquares[currentSquare]++;
     	}
+
     }
 
-    private void useCardImmediately(int doubles) {
+    private void useCardImmediately(int doubles, int roll1, int roll2) {
+        turnsInJail++;
+        
         if(getOutOfJailFreeCards() > 0) {
-            //Should this be 10? was 11.
             currentSquare = 10;
             outOfJailFreeCards--;
-        } else if(doubles > 0){
+            turnsInJail = 0;
+        } else {
             currentSquare = 10;
+            turnsInJail = 0;
+            moveToSquare(roll1, roll2);
         }
     }
 
-    private void useCardLater(int doubles) {
+    private void useCardLater(int doubles, int roll1, int roll2) {
         turnsInJail++;
 
         if(getOutOfJailFreeCards() > 0 && turnsInJail == 4) {
@@ -133,7 +131,17 @@ public class Player {
         } else if(doubles > 0){
             currentSquare = 10;
             turnsInJail = 0;
+        } else if(turnsInJail == 3) {
+        	currentSquare = 10;
+        	turnsInJail = 0;
+        	moveToSquare(roll1, roll2);
         }
+    }
+    
+    private void moveToSquare(int roll1, int roll2) {
+    	currentSquare = (currentSquare + roll1 + roll2) % 39;
+
+        doAction();
     }
     
     private void doAction() {
