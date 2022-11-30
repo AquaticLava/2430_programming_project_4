@@ -108,7 +108,6 @@ public class Player {
 
     private void useCardImmediately(int doubles, int roll1, int roll2) {
         turnsInJail++;
-        landedOnSquares[currentSquare]++;
         
         if(getOutOfJailFreeCards() > 0) {
             currentSquare = 10;
@@ -171,7 +170,10 @@ public class Player {
     }
     
     private void doAction() {
+    	int previousSquare = currentSquare;
     	monopoly.getGameBoard()[currentSquare].Action(this);
+    	//Used to increment again if card/square that was landed on had the player move to another space
+    	if(previousSquare != currentSquare) landedOnSquares[currentSquare]++;
     }
 
     /**
