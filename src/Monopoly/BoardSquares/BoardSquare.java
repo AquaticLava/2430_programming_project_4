@@ -13,6 +13,15 @@ public abstract class BoardSquare {
     }
 
     /**
+     * returns the name of the square
+     *
+     * @return the name of the square
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * action that the square takes.
      */
     public abstract void Action(Player player);

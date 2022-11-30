@@ -159,7 +159,7 @@ public class Monopoly {
      */
     public static void main(String[] args) {
         Monopoly m = new Monopoly();
-        int targetNumberOfTurns = 10;
+        int targetNumberOfTurns = 10_000;
         while (m.turnsTaken < targetNumberOfTurns){
             m.DoGameTurn();
         }
@@ -169,5 +169,11 @@ public class Monopoly {
             playerTurns += i;
         }
         System.out.println("player turns taken: " + playerTurns);
+        System.out.println();
+        System.out.println("square name:        times landed");
+        System.out.println("================================");
+        for (int i = 0; i < m.player.getLandedOnSquares().length; i++){
+            System.out.printf("%-15s %15d\n", m.getGameBoard()[i].getName(), m.player.getLandedOnSquares()[i] );
+        }
     }
 }
