@@ -163,43 +163,45 @@ public class Monopoly {
             100_000,
             1_000_000
         };
-
+        System.out.println("     Player Strategy A                                    Player Strategy B");
+        System.out.println("------------------------------------------------------------------------------------------");
        for (int qty : testQuantities){
            Monopoly stratA = new Monopoly(true); //TODO make sure these are the correct strats
            Monopoly stratB = new Monopoly(false);
-           runTurns(stratA, qty);
-           runTurns(stratB, qty);
+           runTurns(stratA, stratB, qty);
        }
 
 
     }
 
-    private static void runTurns(Monopoly m, int qty){
-        while(m.turnsTaken < qty) {
-            m.DoGameTurn();
+    private static void runTurns(Monopoly stratA, Monopoly stratB, int qty){
+        for (int i = 0; i < qty; i++) {
+            stratA.DoGameTurn();
+            stratB.DoGameTurn();
         }
-        displayTests(m, qty);
+        displayTests(stratA,stratB,qty);
     }
 
-    private static void displayTests(Monopoly m, int qty){ //TODO if we have time, it would look nice to have side by side results
-        int playerTurns = 0;
-        for (int i : m.player.getLandedOnSquares()) {
-            playerTurns += i;
+    private static void displayTests(Monopoly stratA,Monopoly stratB, int qty){
+        for (int j = 1; j < 11; j++) {
+            System.out.println("\n                      Number of turns: " + qty + "    Run number: " + j + "\n");
+            System.out.println("Square name     Times landed(% of time)              Square name     Times landed(% of time)");
+            System.out.println("=====================================                =====================================    ");
+            String formatString = "| %-15s %8d (%5.2f%%) |";
+            for (int i = 0; i < stratA.player.getLandedOnSquares().length; i++){
+                System.out.printf(formatString,
+                        stratA.getGameBoard()[i].getName(),
+                        stratA.player.getLandedOnSquares()[i],
+                        (stratA.player.getLandedOnSquares()[i]/(float)qty)*100);
+                System.out.print("                ");
+                System.out.printf(formatString,
+                        stratB.getGameBoard()[i].getName(),
+                        stratB.player.getLandedOnSquares()[i],
+                        (stratB.player.getLandedOnSquares()[i]/(float)qty)*100);
+                System.out.println();
+            }
+            System.out.println("=====================================                =====================================");
+            System.out.println();
         }
-        if (m.player.usesCardImmediately()) {
-            System.out.println("Strategy A");
-        } else {
-            System.out.println("Strategy B");
-        }
-        System.out.println("-----------");
-        System.out.println("number of test turns: " + qty);
-        System.out.println("player turns taken: " + playerTurns); //TODO Eric, do you want to keep? what should we name it
-        System.out.println("-----------");
-        System.out.println("square name:        times landed");
-        System.out.println("================================");
-        for (int i = 0; i < m.player.getLandedOnSquares().length; i++){
-            System.out.printf("%2d: %-15s %11d\n", i , m.getGameBoard()[i].getName(), m.player.getLandedOnSquares()[i] );
-        }
-
     }
 }
