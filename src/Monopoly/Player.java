@@ -102,13 +102,13 @@ public class Player {
             if (doubles == 4){
                 currentSquare = 40;
             }
-            landedOnSquares[currentSquare]++;
     	}
 
     }
 
     private void useCardImmediately(int doubles, int roll1, int roll2) {
         turnsInJail++;
+        landedOnSquares[currentSquare]++;
         
         if(getOutOfJailFreeCards() > 0) {
             currentSquare = 10;
@@ -149,7 +149,7 @@ public class Player {
             } else {
                 monopoly.getCommunityChestDeck().AddOutOfJailCard();
             }
-            //
+            
             turnsInJail = 0;
         } else if(doubles > 0){
             currentSquare = 10;
@@ -158,11 +158,14 @@ public class Player {
         	currentSquare = 10;
         	turnsInJail = 0;
         	moveToSquare(roll1, roll2);
+        } else {
+            landedOnSquares[currentSquare]++;
         }
     }
     
     private void moveToSquare(int roll1, int roll2) {
     	currentSquare = (currentSquare + roll1 + roll2) % 39;
+        landedOnSquares[currentSquare]++;
 
         doAction();
     }
