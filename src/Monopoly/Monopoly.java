@@ -165,26 +165,28 @@ public class Monopoly {
         };
         System.out.println("     Player Strategy A                                    Player Strategy B");
         System.out.println("------------------------------------------------------------------------------------------");
-       for (int qty : testQuantities){
-           Monopoly stratA = new Monopoly(true); //TODO make sure these are the correct strats
-           Monopoly stratB = new Monopoly(false);
-           runTurns(stratA, stratB, qty);
-       }
+        for (int j = 1; j < 11; j++) {
+            for (int qty : testQuantities) {
+                Monopoly stratA = new Monopoly(true); //TODO make sure these are the correct strats
+                Monopoly stratB = new Monopoly(false);
+                runTurns(stratA, stratB, qty,j);
+            }
+        }
 
 
     }
 
-    private static void runTurns(Monopoly stratA, Monopoly stratB, int qty){
+    private static void runTurns(Monopoly stratA, Monopoly stratB, int qty, int runNum){
         for (int i = 0; i < qty; i++) {
             stratA.DoGameTurn();
             stratB.DoGameTurn();
         }
-        displayTests(stratA,stratB,qty);
+        displayTests(stratA,stratB,qty,runNum);
     }
 
-    private static void displayTests(Monopoly stratA,Monopoly stratB, int qty){
-        for (int j = 1; j < 11; j++) {
-            System.out.println("\n                      Number of turns: " + qty + "    Run number: " + j + "\n");
+    private static void displayTests(Monopoly stratA,Monopoly stratB, int qty, int runNum){
+
+            System.out.println("\n                      Number of turns: " + qty + "    Run number: " + runNum + "\n");
             System.out.println("Square name     Times landed(% of time)              Square name     Times landed(% of time)");
             System.out.println("=====================================                =====================================    ");
             String formatString = "| %-15s %8d (%5.2f%%) |";
@@ -202,6 +204,5 @@ public class Monopoly {
             }
             System.out.println("=====================================                =====================================");
             System.out.println();
-        }
     }
 }
