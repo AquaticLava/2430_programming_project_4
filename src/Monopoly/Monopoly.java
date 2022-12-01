@@ -172,8 +172,6 @@ public class Monopoly {
                 runTurns(stratA, stratB, qty,j);
             }
         }
-
-
     }
 
     private static void runTurns(Monopoly stratA, Monopoly stratB, int qty, int runNum){
@@ -187,22 +185,22 @@ public class Monopoly {
     private static void displayTests(Monopoly stratA,Monopoly stratB, int qty, int runNum){
 
             System.out.println("\n                      Number of turns: " + qty + "    Run number: " + runNum + "\n");
-            System.out.println("Square name     Times landed(% of time)              Square name     Times landed(% of time)");
-            System.out.println("=====================================                =====================================    ");
-            String formatString = "| %-15s %8d (%5.2f%%) |";
+            System.out.println("Square name     Times landed(% of time)                  Square name     Times landed(% of time)");
+            System.out.println("=========================================                =========================================");
+            String formatString = "| %2d: %-15s %8d (%5.2f%%) |";
             for (int i = 0; i < stratA.player.getLandedOnSquares().length; i++){
-                System.out.printf(formatString,
+                System.out.printf(formatString, i,
                         stratA.getGameBoard()[i].getName(),
                         stratA.player.getLandedOnSquares()[i],
                         (stratA.player.getLandedOnSquares()[i]/(float)qty)*100);
                 System.out.print("                ");
-                System.out.printf(formatString,
+                System.out.printf(formatString, i,
                         stratB.getGameBoard()[i].getName(),
                         stratB.player.getLandedOnSquares()[i],
                         (stratB.player.getLandedOnSquares()[i]/(float)qty)*100);
                 System.out.println();
             }
-            System.out.println("=====================================                =====================================");
+            System.out.println("=========================================                =========================================");
             System.out.println();
     }
 }
